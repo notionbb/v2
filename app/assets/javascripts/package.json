@@ -1,0 +1,11 @@
+
+{
+  "private": true,
+  "workspaces": [
+    "discourse",
+    "discourse-common",
+    "pretty-text",
+    "select-kit",
+    "i18n"
+  ]
+}
