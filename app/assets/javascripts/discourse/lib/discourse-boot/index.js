@@ -13,8 +13,12 @@ module.exports = {
       return `
         <script>
           (function() {
-            const app = require("${config.modulePrefix}/app")["default"].create(${appJSON});
-            app.start();
+            fetch("/bootstrap.json").then(res => res.json()).then(data => {
+              let appJSON = ${appJSON};
+              appJSON.bootstrap = data.bootstrap;
+              const app = require("${config.modulePrefix}/app")["default"].create(appJSON);
+              app.start();
+            });
           })();
         </script>
       `;

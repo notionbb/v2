@@ -26,22 +26,33 @@ export default {
     if (isTesting()) {
       return;
     }
-    const preloadedDataElement = document.getElementById("data-preloaded");
-    const setupData = document.getElementById("data-discourse-setup").dataset;
 
-    if (preloadedDataElement) {
-      const preloaded = JSON.parse(preloadedDataElement.dataset.preloaded);
-
-      Object.keys(preloaded).forEach(function(key) {
-        PreloadStore.store(key, JSON.parse(preloaded[key]));
-
-        if (setupData.debugPreloadedAppData === "true") {
-          /* eslint-disable no-console */
-          console.log(key, PreloadStore.get(key));
-          /* eslint-enable no-console */
-        }
-      });
+    let setupData;
+    let preloaded;
+    if (app.bootstrap) {
+      setupData = app.bootstrap.setup_data;
+      preloaded = app.bootstrap.preloaded;
     }
+
+    const setupDataElement = document.getElementById("data-discourse-setup");
+    if (setupDataElement) {
+      setupData = document.getElementById("data-discourse-setup").dataset;
+    }
+
+    const preloadedDataElement = document.getElementById("data-preloaded");
+    if (preloadedDataElement) {
+      preloaded = JSON.parse(preloadedDataElement.dataset.preloaded);
+    }
+
+    Object.keys(preloaded).forEach(function(key) {
+      PreloadStore.store(key, JSON.parse(preloaded[key]));
+
+      if (setupData.debugPreloadedAppData === "true") {
+        /* eslint-disable no-console */
+        console.log(key, PreloadStore.get(key));
+        /* eslint-enable no-console */
+      }
+    });
 
     let baseUrl = setupData.baseUrl;
     Object.defineProperty(app, "BaseUrl", {

@@ -9,7 +9,7 @@ import TopicTrackingState, {
 import ScreenTrack from "discourse/lib/screen-track";
 import Site from "discourse/models/site";
 import User from "discourse/models/user";
-import MessageBus from "message-bus-client";
+// import MessageBus from "message-bus-client";
 
 const ALL_TARGETS = ["controller", "component", "route", "model", "adapter"];
 
@@ -29,6 +29,12 @@ export default {
       ALL_TARGETS.forEach(t => app.inject(t, "store", "service:store"));
     }
 
+    // TODO: This should be included properly
+    let MessageBus = {
+      subscribe() {},
+      stop() {},
+      start() {}
+    };
     app.register("message-bus:main", MessageBus, { instantiate: false });
 
     ALL_TARGETS.concat("service").forEach(t =>
